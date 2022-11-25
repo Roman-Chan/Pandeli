@@ -2,6 +2,7 @@ import { pool } from "../db.js";
 import { fileURLToPath } from "url";
 import path from "path";
 import fs  from "fs";
+import { json } from "express";
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -73,7 +74,8 @@ export const getProductsByid = async (req,res) =>{
 }
 
 export const PostProducts = async (req,res)=>{
-    
+    try
+    {
         const img = req.file.filename
         const {idcategoria,nombre,descripcion,total}  = req.body
         if(!idcategoria || !nombre ||  !descripcion || !total)  return res.status(400).send("Campo vacio") 
@@ -86,6 +88,10 @@ export const PostProducts = async (req,res)=>{
                     descripcion,
                     total
                 })
+    }catch
+    {
+        return res.json("error")
+    }
 }
 
 export const DeleteProduct = async (req,res)=>{
